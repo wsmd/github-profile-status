@@ -1,0 +1,37 @@
+{
+  "name": "github-profile-status",
+  "version": "0.1.0",
+  "description": "Update the status of your GitHub profile programmatically",
+  "main": "dist/index.js",
+  "repository": "https://github.com/wsmd/github-status-updater",
+  "homepage": "https://github.com/wsmd/github-status-updater",
+  "bugs": "https://github.com/wsmd/github-status-updater/issues",
+  "author": "Waseem Dahman <dwaseem@icloud.com>",
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "github",
+    "profile",
+    "profile-status",
+    "automation",
+    "puppeteer"
+  ],
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "tsc",
+    "prepack": "rm -rf dist && yarn build"
+  },
+  "dependencies": {
+    "puppeteer": "^1.13.0"
+  },
+  "devDependencies": {
+    "@types/puppeteer": "^1.12.3",
+    "typescript": "^3.3.4000"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "trailingComma": "all"
+  }
+}
