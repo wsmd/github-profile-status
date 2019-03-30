@@ -1,11 +1,8 @@
 import { ElementHandle, Page } from 'puppeteer';
 import { Emoji } from './Emoji';
+import { BasicLoginOptions, BasicLoginProvider } from './login/BasicLoginProvider';
 import { LoginProvider } from './login/LoginProvider';
-import { SessionLoginProvider } from './login/SessionLoginProvider';
-
-interface StatusUpdaterConstructorOptions {
-  session: string;
-}
+import { SessionLoginOptions, SessionLoginProvider } from './login/SessionLoginProvider';
 
 interface Status {
   message: string;
@@ -20,14 +17,23 @@ interface StatusFormFields {
   busy: ElementHandle<HTMLInputElement>;
 }
 
-export class GithubProfileStatus {
-  private loginProvider: LoginProvider;
+interface ConstructorOptions {
+  debug?: boolean;
+}
 
-  constructor(private options: StatusUpdaterConstructorOptions) {
-    if (typeof options.session !== 'string') {
-      throw new Error('You must provide a user session cookie');
+export class GithubProfileStatus {
+  private loginProvider: LoginProvider<any>;
+
+  constructor(options: ConstructorOptions & BasicLoginOptions);
+  constructor(options: ConstructorOptions & SessionLoginOptions);
+  constructor(private options: any) {
+    if (SessionLoginProvider.validateOptions(options)) {
+      this.loginProvider = new SessionLoginProvider(options);
+    } else if (BasicLoginProvider.validateOptions(options)) {
+      this.loginProvider = new BasicLoginProvider(options);
+    } else {
+      throw new Error('Invalid login options');
     }
-    this.loginProvider = new SessionLoginProvider(options.session);
   }
 
   /**
@@ -85,8 +91,7 @@ export class GithubProfileStatus {
     await homePage.evaluate((el: HTMLFormElement) => el.submit(), fields.form);
 
     await homePage.waitForResponse(
-      response =>
-        response.url().includes('/users/status') && response.status() === 200,
+      response => response.url().includes('/users/status') && response.status() === 200,
     );
 
     await homePage.browser().close();

@@ -3,32 +3,22 @@ import { LoginProvider } from './LoginProvider';
 
 const GITHUB_URL = 'https://github.com/';
 
-export class SessionLoginProvider implements LoginProvider {
-  constructor(private userSession: string) {}
+export interface SessionLoginOptions {
+  sessionCookie: string;
+}
+
+export class SessionLoginProvider extends LoginProvider<SessionLoginOptions> {
+  public static validateOptions(options: any): options is SessionLoginOptions {
+    return typeof options.sessionCookie === 'string';
+  }
 
   public async login() {
-    const browser = await puppeteer.launch();
-    const page = await browser.newPage();
-
-    await page.setRequestInterception(true);
-
-    page.on('request', req => {
-      if (
-        req.resourceType() === 'stylesheet' ||
-        req.resourceType() === 'font' ||
-        req.resourceType() === 'script' ||
-        req.resourceType() === 'image'
-      ) {
-        req.abort();
-      } else {
-        req.continue();
-      }
-    });
+    const page = await this.createPage();
 
     await page.setCookie({
       name: 'user_session',
       url: GITHUB_URL,
-      value: this.userSession,
+      value: this.options.sessionCookie,
     });
 
     await page.goto(GITHUB_URL, { waitUntil: 'domcontentloaded' });
@@ -39,7 +29,7 @@ export class SessionLoginProvider implements LoginProvider {
       }
     }
 
-    await browser.close();
+    await page.browser().close();
 
     throw new Error('InvalidSession');
   }

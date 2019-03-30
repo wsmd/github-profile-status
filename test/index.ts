@@ -3,7 +3,7 @@
 import { GithubProfileStatus } from '../lib';
 
 const profileStatus = new GithubProfileStatus({
-  session: process.env.USER_SESSION!,
+  sessionCookie: process.env.USER_SESSION!,
 });
 
 async function main() {
