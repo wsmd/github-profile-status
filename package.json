@@ -1,6 +1,6 @@
 {
   "name": "github-profile-status",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Update the status of your GitHub profile programmatically",
   "main": "dist/index.js",
   "repository": "https://github.com/wsmd/github-status-updater",
