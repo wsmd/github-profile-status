@@ -16,9 +16,15 @@ async function test(name: string, expected: any, cb: (...args: any) => any) {
   console.groupEnd();
 }
 
-const profileStatus = new GitHubProfileStatus({
-  sessionCookie: process.env.USER_SESSION!,
-});
+const options = {} as any;
+if (process.env.USER_SESSION) {
+  options.sessionCookie = process.env.USER_SESSION;
+} else {
+  options.username = process.env.GITHUB_USERNAME;
+  options.password = process.env.USER_SESSION;
+}
+
+const profileStatus = new GitHubProfileStatus(options);
 
 const status = {
   busy: true,

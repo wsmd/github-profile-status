@@ -24,13 +24,17 @@
     "build": "tsc",
     "prepack": "rm -rf dist && yarn build",
     "lint": "tslint --project .",
-    "test": "yarn typecheck && yarn lint"
+    "test": "yarn typecheck && yarn lint",
+    "test:func": "rm -rf tmp && tsc --build test/tsconfig.json && node -r dotenv/config tmp/test",
+    "test:all": "yarn test && yarn test:func"
   },
   "dependencies": {
     "puppeteer": "^1.13.0"
   },
   "devDependencies": {
+    "@types/dotenv": "^6.1.1",
     "@types/puppeteer": "^1.12.3",
+    "dotenv": "^7.0.0",
     "tslint": "^5.14.0",
     "typescript": "^3.3.4000"
   },
