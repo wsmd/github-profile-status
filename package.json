@@ -4,9 +4,9 @@
   "description": "Update the status of your GitHub profile programmatically",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "repository": "https://github.com/wsmd/github-status-updater",
-  "homepage": "https://github.com/wsmd/github-status-updater",
-  "bugs": "https://github.com/wsmd/github-status-updater/issues",
+  "repository": "https://github.com/wsmd/github-profile-status",
+  "homepage": "https://github.com/wsmd/github-profile-status",
+  "bugs": "https://github.com/wsmd/github-profile-status/issues",
   "author": "Waseem Dahman <dwaseem@icloud.com>",
   "license": "MIT",
   "files": [
