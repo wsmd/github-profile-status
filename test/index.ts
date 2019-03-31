@@ -1,25 +1,43 @@
 // tslint:disable: no-console
 
-import { GithubProfileStatus } from '../lib';
+import { deepEqual } from 'assert';
+import { GitHubProfileStatus } from '../lib';
+import { Status } from '../lib/types';
 
-const profileStatus = new GithubProfileStatus({
+async function test(name: string, expected: any, cb: (...args: any) => any) {
+  console.group(name);
+  try {
+    const result = await cb();
+    deepEqual(result, expected);
+    console.log('✓', result);
+  } catch (err) {
+    throw err;
+  }
+  console.groupEnd();
+}
+
+const profileStatus = new GitHubProfileStatus({
   sessionCookie: process.env.USER_SESSION!,
 });
 
+const status = {
+  busy: true,
+  emoji: ':wave:',
+  message: 'Hello, World!',
+};
+
 async function main() {
-  try {
-    const success = await profileStatus.set({
-      busy: true,
-      emoji: ':wave:',
-      message: process.argv[2] || 'Hello, World!',
-    });
-    if (success) {
-      const status = await profileStatus.get();
-      console.log(status);
-    }
-  } catch (error) {
-    console.log(error.message);
-  }
+  await test('profileStatus.set', true, () => {
+    return profileStatus.set(status as Status);
+  });
+
+  await test('profileStatus.get', status, () => {
+    return profileStatus.get();
+  });
+
+  await test('profileStatus.clear', true, () => {
+    return profileStatus.clear();
+  });
 }
 
 main();
