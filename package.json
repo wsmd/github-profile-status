@@ -24,9 +24,10 @@
     "build": "tsc",
     "prepack": "rm -rf dist && yarn build",
     "lint": "tslint --project .",
-    "test": "yarn typecheck && yarn lint",
-    "test:func": "rm -rf tmp && tsc --build test/tsconfig.json && node -r dotenv/config tmp/test",
-    "test:all": "yarn test && yarn test:func"
+    "test": "yarn typecheck && yarn lint && yarn test:headless",
+    "test:build": "yarn test:cleanup && tsc --build test/tsconfig.json",
+    "test:cleanup": "rm -rf test/tmp",
+    "test:headless": "yarn test:build && node -r dotenv/config test/tmp/test"
   },
   "dependencies": {
     "puppeteer": "^1.13.0"

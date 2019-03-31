@@ -6,5 +6,5 @@ node_modules
 .vscode
 coverage
 package-lock.json
-tmp
+test/tmp
 .env
