@@ -1,134 +1,48 @@
-import { ElementHandle, Page } from 'puppeteer';
-import { Emoji } from './Emoji';
-import { BasicLoginOptions, BasicLoginProvider } from './login/BasicLoginProvider';
-import { LoginProvider } from './login/LoginProvider';
-import { SessionLoginOptions, SessionLoginProvider } from './login/SessionLoginProvider';
-
-interface Status {
-  message: string;
-  emoji: Emoji;
-  busy: boolean;
-}
-
-interface StatusFormFields {
-  form: ElementHandle<HTMLFormElement>;
-  emoji: ElementHandle<HTMLInputElement>;
-  message: ElementHandle<HTMLInputElement>;
-  busy: ElementHandle<HTMLInputElement>;
-}
-
-interface ConstructorOptions {
-  debug?: boolean;
-}
+import * as Commands from './commands/commands';
+import * as Login from './login/login';
+import { Status } from './types';
 
 export class GithubProfileStatus {
-  private loginProvider: LoginProvider<any>;
+  private loginProvider: Login.LoginProvider<any>;
 
-  constructor(options: ConstructorOptions & BasicLoginOptions);
-  constructor(options: ConstructorOptions & SessionLoginOptions);
+  constructor(options: Login.BasicLoginOptions);
+  constructor(options: Login.SessionLoginOptions);
   constructor(private options: any) {
-    if (SessionLoginProvider.validateOptions(options)) {
-      this.loginProvider = new SessionLoginProvider(options);
-    } else if (BasicLoginProvider.validateOptions(options)) {
-      this.loginProvider = new BasicLoginProvider(options);
+    if (Login.SessionLoginProvider.validateOptions(options)) {
+      this.loginProvider = new Login.SessionLoginProvider(options);
+    } else if (Login.BasicLoginProvider.validateOptions(options)) {
+      this.loginProvider = new Login.BasicLoginProvider(options);
     } else {
       throw new Error('Invalid login options');
     }
   }
 
   /**
-   * Gets the current user profile status
+   * Clears the user profile status
+   */
+  public async clear(): Promise<boolean> {
+    return this.execCommand(Commands.ClearCommand);
+  }
+
+  /**
+   * Gets the user profile status
    */
   public async get(): Promise<Status> {
-    const homePage = await this.loginProvider.login();
-    const { emoji, message, busy } = await this.getFormFields(homePage);
-    const [emojiValue, messageValue, busyValue] = await Promise.all([
-      this.getPropertyAsJSON(emoji, 'value'),
-      this.getPropertyAsJSON(message, 'value'),
-      this.getPropertyAsJSON(busy, 'checked'),
-    ]);
-    await homePage.browser().close();
-    return {
-      busy: busyValue,
-      emoji: emojiValue as Emoji,
-      message: messageValue,
-    };
+    return this.execCommand(Commands.GetCommand);
   }
 
   /**
-   * Sets the user profile status
+   * Updates the user profile status
    */
   public async set(status: Partial<Status>): Promise<boolean> {
-    const homePage = await this.loginProvider.login();
-    const fields = await this.getFormFields(homePage);
-
-    if (status.message) {
-      await homePage.evaluate(
-        (el: HTMLInputElement, emoji) => (el.value = emoji),
-        fields.message,
-        status.message,
-      );
-    }
-
-    if (status.emoji) {
-      await homePage.evaluate(
-        (el: HTMLInputElement, emoji) => (el.value = emoji),
-        fields.emoji,
-        status.emoji,
-      );
-    }
-
-    if (status.busy !== undefined) {
-      homePage.evaluate(
-        (el: HTMLInputElement, isBusy) => {
-          el.checked = isBusy;
-        },
-        fields.busy,
-        status.busy,
-      );
-    }
-
-    await homePage.evaluate((el: HTMLFormElement) => el.submit(), fields.form);
-
-    await homePage.waitForResponse(
-      response => response.url().includes('/users/status') && response.status() === 200,
-    );
-
-    await homePage.browser().close();
-
-    return true;
+    return this.execCommand(Commands.SetCommand, status);
   }
 
-  /**
-   * Returns references for the element handlers of user profile status fields
-   */
-  private async getFormFields(page: Page): Promise<StatusFormFields> {
-    const form = await page.$('form[action^="/users/status"]');
-    if (!form) {
-      throw new Error('Could find status form');
-    }
-
-    const [message, emoji, busy] = await Promise.all([
-      form.$('input[name="message"]'),
-      form.$('input[name="emoji"]'),
-      form.$('input[name="limited_availability"]'),
-    ]);
-
-    if (!(message && emoji && busy)) {
-      throw new Error('Could not find status form inputs');
-    }
-
-    return { busy, emoji, form, message };
-  }
-
-  /**
-   * Fetches a single property of an element handle as JSON
-   */
-  private async getPropertyAsJSON<T extends keyof HTMLInputElement>(
-    element: ElementHandle<any>,
-    propertyName: T,
-  ): Promise<HTMLInputElement[T]> {
-    const property = await element.getProperty(propertyName);
-    return property.jsonValue();
+  private async execCommand<C extends Commands.CommandClass, P extends Commands.CommandParams<C>>(
+    command: C,
+    ...args: P
+  ) {
+    const page = await this.loginProvider.login();
+    return new command(page, ...args).exec() as Commands.CommandResult<C>;
   }
 }

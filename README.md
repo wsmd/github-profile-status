@@ -2,8 +2,8 @@
 
 # github-profile-status
 
-[![CI Build](https://travis-ci.org/wsmd/github-profile-status.svg?branch=master)](https://travis-ci.org/wsmd/github-profile-status)
 [![Current Release](https://img.shields.io/npm/v/github-profile-status.svg)](https://www.npmjs.com/package/github-profile-status)
+[![CI Build](https://travis-ci.org/wsmd/github-profile-status.svg?branch=master)](https://travis-ci.org/wsmd/github-profile-status)
 [![Licence](https://img.shields.io/github/license/wsmd/github-profile-status.svg)](https://github.com/wsmd/github-profile-status/blob/master/LICENSE)
 
 </div>
@@ -22,6 +22,7 @@
   - [Methods](#methods)
     - [`GithubProfileStatus.get(): Promise<Status>`](#githubprofilestatusget-promisestatus)
     - [`GithubProfileStatus.set(status: Status): Promise<boolean>`](#githubprofilestatussetstatus-status-promiseboolean)
+    - [`GithubProfileStatus.clear(): Promise<boolean>`](#githubprofilestatusclear-promiseboolean)
   - [Status Object](#status-object)
 - [Authentication & Security Disclaimer](#authentication--security-disclaimer)
 - [Licence](#licence)
@@ -72,6 +73,9 @@ async function main() {
 
   // get your github profile status
   const status = await profileStatus.get();
+
+  // clears your github profile status
+  const cleared = await profileStatus.clear();
 }
 ```
 
@@ -101,7 +105,11 @@ Retrieves the user profile status. Returns a Promise that resolves with the [sta
 
 #### `GithubProfileStatus.set(status: Status): Promise<boolean>`
 
-Updates the user profile status using the provided [status parameters](#status-object). All parameters are optional. If you omit certain parameters, they will remain as they are.
+Updates the user profile status using the provided [status parameters](#status-object). All parameters are optional. If you omit certain parameters, they will remain as they are. Returns a Promise that resolves to a boolean indicating a successful operation
+
+#### `GithubProfileStatus.clear(): Promise<boolean>`
+
+Clears the user profile status. Returns a Promise that resolves to a boolean indicating a successful operation.
 
 ### Status Object
 
@@ -109,7 +117,7 @@ The status object has the following keys:
 
 - `busy: boolean`: A boolean indicating whether the profile status should be displayed as "Busy."
 - `message: string`: The status message.
-- `emoji: string`: The emoji alias that will be displayed on the status. The emoji alias should be provided in this format `:emoji_name:`. The list of all possible emojis is [available here](https://github.com/wsmd/github-profile-status/blob/master/lib/Emoji.d.ts).
+- `emoji: string`: The emoji alias that will be displayed on the status. The emoji alias should be provided in this format `:emoji_name:`. The list of all possible emojis is [available here](https://github.com/wsmd/github-profile-status/blob/master/lib/types.ts#L7).
 
 ## Authentication & Security Disclaimer
 

@@ -1,4 +1,10 @@
-export type Emoji =
+export interface Status {
+  message: string;
+  emoji: Emoji;
+  busy: boolean;
+}
+
+type Emoji =
   | ':-1:'
   | ':+1:'
   | ':100:'

@@ -1,5 +1,5 @@
 import { Page } from 'puppeteer';
-import { LoginProvider } from './LoginProvider';
+import { LoginProvider } from './loginProvider';
 
 export interface BasicLoginOptions {
   username: string;
@@ -12,7 +12,7 @@ export class BasicLoginProvider extends LoginProvider<BasicLoginOptions> {
   }
 
   public async login(): Promise<Page> {
-    const page = await this.createPage();
+    const page = await this.getPage();
 
     await page.goto('https://github.com/login', {
       waitUntil: 'domcontentloaded',

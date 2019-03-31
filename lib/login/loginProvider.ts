@@ -11,8 +11,8 @@ export abstract class LoginProvider<T> {
     throw new Error('Method not implemented');
   }
 
-  protected async createPage(options?: puppeteer.LaunchOptions): Promise<puppeteer.Page> {
-    const browser = await puppeteer.launch(options);
+  protected async getPage(): Promise<puppeteer.Page> {
+    const browser = await puppeteer.launch();
     const page = await browser.newPage();
 
     await page.setRequestInterception(true);

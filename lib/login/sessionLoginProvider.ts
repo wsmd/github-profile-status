@@ -1,5 +1,4 @@
-import puppeteer from 'puppeteer';
-import { LoginProvider } from './LoginProvider';
+import { LoginProvider } from './loginProvider';
 
 const GITHUB_URL = 'https://github.com/';
 
@@ -13,7 +12,7 @@ export class SessionLoginProvider extends LoginProvider<SessionLoginOptions> {
   }
 
   public async login() {
-    const page = await this.createPage();
+    const page = await this.getPage();
 
     await page.setCookie({
       name: 'user_session',
