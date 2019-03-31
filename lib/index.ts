@@ -2,7 +2,7 @@ import * as Commands from './commands/commands';
 import * as Login from './login/login';
 import { Status } from './types';
 
-export class GithubProfileStatus {
+export class GitHubProfileStatus {
   private loginProvider: Login.LoginProvider<any>;
 
   constructor(options: Login.BasicLoginOptions);
