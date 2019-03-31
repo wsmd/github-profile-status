@@ -3,6 +3,7 @@
   "version": "0.2.0",
   "description": "Update the status of your GitHub profile programmatically",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "repository": "https://github.com/wsmd/github-status-updater",
   "homepage": "https://github.com/wsmd/github-status-updater",
   "bugs": "https://github.com/wsmd/github-status-updater/issues",
@@ -21,13 +22,16 @@
   "scripts": {
     "typecheck": "tsc --noEmit",
     "build": "tsc",
-    "prepack": "rm -rf dist && yarn build"
+    "prepack": "rm -rf dist && yarn build",
+    "lint": "tslint --project .",
+    "test": "yarn typecheck && yarn lint"
   },
   "dependencies": {
     "puppeteer": "^1.13.0"
   },
   "devDependencies": {
     "@types/puppeteer": "^1.12.3",
+    "tslint": "^5.14.0",
     "typescript": "^3.3.4000"
   },
   "prettier": {

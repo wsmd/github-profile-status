@@ -2,6 +2,7 @@
 
 # github-profile-status
 
+[![CI Build](https://travis-ci.org/wsmd/github-profile-status.svg?branch=master)](https://travis-ci.org/wsmd/github-profile-status)
 [![Current Release](https://img.shields.io/npm/v/github-profile-status.svg)](https://www.npmjs.com/package/github-profile-status)
 [![Licence](https://img.shields.io/github/license/wsmd/github-profile-status.svg)](https://github.com/wsmd/github-profile-status/blob/master/LICENSE)
 
@@ -43,7 +44,7 @@ Github recently added a cool [new feature](https://github.blog/changelog/2019-01
 
 Unfortunately, at the time of writing this, this feature is only available via the Github web interface, and it is not possible to update the profile status via the API.
 
-Therefore, I built this tool to set the status of my Github profile programmatically.
+Therefore, I built this tool to update the status of my Github profile programmatically.
 
 ## Installation
 
@@ -60,9 +61,6 @@ async function main() {
   const profileStatus = new GithubProfileStatus({
     // login using a user_session cookie
     userSession: process.env.USER_SESSION,
-    // or by using username/password
-    username: process.env.GITHUB_USERNAME,
-    password: process.env.GITHUB_PASSWORD,
   });
 
   // update your the github profile status
@@ -115,11 +113,13 @@ The status object has the following keys:
 
 ## Authentication & Security Disclaimer
 
-I built this tool for my own personal use. Since the functionality is not provided by the Github API, this tool **does not use any of GitHub's official authentication methods**.
+I built this tool for my own personal use. Since this functionality is not provided by the Github API, there are a few points to highlight regarding authentication and security:
 
-This tool requires either the `user_session` cookie from an active login session of the user account or the user basic login information: username and password. This tool will use this information to connect to the user account via `https://github.com` and perform a status update/check. **I highly encourage providing this information using environment variables**.
-
-While this tool **does not persist or share** any information provided, it is very important that you are aware of the limitation. Please use at your own risk.
+- This tool **does not use any of GitHub's official authentication methods**.
+- This tool requires either the `user_session` cookie from an active login session of the user account or the user basic login information: username and password.
+- This tool uses this information to imitate a user login via `https://github.com` and perform a status update/check.
+- **It is highly encouraged that you provide this information using environment variables**, and not include them in your code.
+- While this tool **does not persist or share** any of the information provided, it is very important that you are aware of the limitation. Please use at your own risk.
 
 ## Licence
 
