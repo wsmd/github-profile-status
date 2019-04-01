@@ -4,9 +4,9 @@
   "description": "Update the status of your GitHub profile programmatically",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "repository": "https://github.com/wsmd/github-status-updater",
-  "homepage": "https://github.com/wsmd/github-status-updater",
-  "bugs": "https://github.com/wsmd/github-status-updater/issues",
+  "repository": "https://github.com/wsmd/github-profile-status",
+  "homepage": "https://github.com/wsmd/github-profile-status",
+  "bugs": "https://github.com/wsmd/github-profile-status/issues",
   "author": "Waseem Dahman <dwaseem@icloud.com>",
   "license": "MIT",
   "files": [
@@ -24,13 +24,18 @@
     "build": "tsc",
     "prepack": "rm -rf dist && yarn build",
     "lint": "tslint --project .",
-    "test": "yarn typecheck && yarn lint"
+    "test": "yarn typecheck && yarn lint && yarn test:headless",
+    "test:build": "yarn test:cleanup && tsc --build test/tsconfig.json",
+    "test:cleanup": "rm -rf test/tmp",
+    "test:headless": "yarn test:build && node -r dotenv/config test/tmp/test"
   },
   "dependencies": {
     "puppeteer": "^1.13.0"
   },
   "devDependencies": {
+    "@types/dotenv": "^6.1.1",
     "@types/puppeteer": "^1.12.3",
+    "dotenv": "^7.0.0",
     "tslint": "^5.14.0",
     "typescript": "^3.3.4000"
   },

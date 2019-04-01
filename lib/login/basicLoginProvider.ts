@@ -11,12 +11,10 @@ export class BasicLoginProvider extends LoginProvider<BasicLoginOptions> {
     return typeof options.username === 'string' && typeof options.password === 'string';
   }
 
-  public async login(): Promise<Page> {
+  public async login() {
     const page = await this.getPage();
 
-    await page.goto('https://github.com/login', {
-      waitUntil: 'domcontentloaded',
-    });
+    await page.goto('https://github.com/login', { waitUntil: 'domcontentloaded' });
 
     await page.type('input[name="login"]', this.options.username);
     await page.type('input[name="password"]', this.options.password);

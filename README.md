@@ -17,12 +17,12 @@
 - [Usage](#usage)
 - [API](#api)
   - [Constructor](#constructor)
-    - [`new GithubProfileStatus(options: ConstructorOptions)`](#new-githubprofilestatusoptions-constructoroptions)
+    - [`new GitHubProfileStatus(options: ConstructorOptions)`](#new-githubprofilestatusoptions-constructoroptions)
     - [Constructor Options](#constructor-options)
   - [Methods](#methods)
-    - [`GithubProfileStatus.get(): Promise<Status>`](#githubprofilestatusget-promisestatus)
-    - [`GithubProfileStatus.set(status: Status): Promise<boolean>`](#githubprofilestatussetstatus-status-promiseboolean)
-    - [`GithubProfileStatus.clear(): Promise<boolean>`](#githubprofilestatusclear-promiseboolean)
+    - [`GitHubProfileStatus.get(): Promise<Status>`](#githubprofilestatusget-promisestatus)
+    - [`GitHubProfileStatus.set(status: Status): Promise<boolean>`](#githubprofilestatussetstatus-status-promiseboolean)
+    - [`GitHubProfileStatus.clear(): Promise<boolean>`](#githubprofilestatusclear-promiseboolean)
   - [Status Object](#status-object)
 - [Authentication & Security Disclaimer](#authentication--security-disclaimer)
 - [Licence](#licence)
@@ -32,7 +32,7 @@
 
 ## Motivation
 
-Github recently added a cool [new feature](https://github.blog/changelog/2019-01-09-set-your-status/) that allows users to set a status on their Github profile!
+GitHub recently added a cool [new feature](https://github.blog/changelog/2019-01-09-set-your-status/) that allows users to set a status on their GitHub profile!
 
 > You can now set your status on GitHub! Use your status to share specific information with only your organization, or share a status with all of GitHub! Optionally, you can indicate that you’re busy so your collaborators can determine whether to mention someone else for a quicker response.
 
@@ -43,9 +43,9 @@ Github recently added a cool [new feature](https://github.blog/changelog/2019-01
 <br />
 </div>
 
-Unfortunately, at the time of writing this, this feature is only available via the Github web interface, and it is not possible to update the profile status via the API.
+Unfortunately, at the time of writing this, this feature is only available via the GitHub web interface, and it is not possible to update the profile status via the API.
 
-Therefore, I built this tool to update the status of my Github profile programmatically.
+Therefore, I built this tool to update the status of my GitHub profile programmatically.
 
 ## Installation
 
@@ -56,10 +56,10 @@ npm install --save github-profile-status
 ## Usage
 
 ```js
-import { GithubProfileStatus } from 'github-profile-status';
+import { GitHubProfileStatus } from 'github-profile-status';
 
 async function main() {
-  const profileStatus = new GithubProfileStatus({
+  const profileStatus = new GitHubProfileStatus({
     // login using a user_session cookie
     userSession: process.env.USER_SESSION,
   });
@@ -83,7 +83,7 @@ async function main() {
 
 ### Constructor
 
-#### `new GithubProfileStatus(options: ConstructorOptions)`
+#### `new GitHubProfileStatus(options: ConstructorOptions)`
 
 Creates a new github profile status object using the [provided options](#constructor-options).
 
@@ -99,15 +99,15 @@ Please note that if the `userSession` option is provided, it will be used as the
 
 The GitHub profile status instance has the following methods:
 
-#### `GithubProfileStatus.get(): Promise<Status>`
+#### `GitHubProfileStatus.get(): Promise<Status>`
 
 Retrieves the user profile status. Returns a Promise that resolves with the [status object](#status-object).
 
-#### `GithubProfileStatus.set(status: Status): Promise<boolean>`
+#### `GitHubProfileStatus.set(status: Status): Promise<boolean>`
 
 Updates the user profile status using the provided [status parameters](#status-object). All parameters are optional. If you omit certain parameters, they will remain as they are. Returns a Promise that resolves to a boolean indicating a successful operation
 
-#### `GithubProfileStatus.clear(): Promise<boolean>`
+#### `GitHubProfileStatus.clear(): Promise<boolean>`
 
 Clears the user profile status. Returns a Promise that resolves to a boolean indicating a successful operation.
 
@@ -121,13 +121,13 @@ The status object has the following keys:
 
 ## Authentication & Security Disclaimer
 
-I built this tool for my own personal use. Since this functionality is not provided by the Github API, there are a few points to highlight regarding authentication and security:
+I built this tool for my own personal use. Since this functionality is not provided by the GitHub API, there are a few points to highlight regarding authentication and security:
 
 - This tool **does not use any of GitHub's official authentication methods**.
 - This tool requires either the `user_session` cookie from an active login session of the user account or the user basic login information: username and password.
 - This tool uses this information to imitate a user login via `https://github.com` and perform a status update/check.
 - **It is highly encouraged that you provide this information using environment variables**, and not include them in your code.
-- While this tool **does not persist or share** any of the information provided, it is very important that you are aware of the limitation. Please use at your own risk.
+- While this tool **does not persist or share** any of the information provided, it is very important that you are aware of this limitation. Please use at your own risk.
 
 ## Licence
 
