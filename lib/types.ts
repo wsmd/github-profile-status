@@ -1,7 +1,44 @@
-export interface Status {
-  message: string;
-  emoji: Emoji;
-  busy: boolean;
+export { GraphQLClient } from 'graphql-request';
+
+export type UserStatus = null | {
+  /**
+   * An emoji summarizing the user's status.
+   */
+  emoji: string | null;
+  /**
+   * If set, the status will not be shown after this date.
+   */
+  expiresAt: string | null;
+  /**
+   * Whether this status indicates the user is not fully available on GitHub.
+   */
+  limitedAvailability: boolean;
+  /**
+   * A brief message describing what the user is doing.
+   */
+  message: string | null;
+};
+
+export interface ChangeUserStatusInput {
+  /**
+   * The emoji to represent your status. Can either be a native Unicode emoji or
+   * an emoji name with colons, e.g., :wave:
+   */
+  emoji?: string | null;
+  /**
+   * If set, the user status will not be shown after this date. The value can be
+   * either a Date object or an ISO-8601 encoded UTC date string.
+   */
+  expiresAt?: Date | string | null;
+  /**
+   * Whether this status should indicate you are not fully available on GitHub,
+   * e.g., you are away.
+   */
+  limitedAvailability?: boolean;
+  /**
+   * A short description of your current status.
+   */
+  message: string | null;
 }
 
 type Emoji =

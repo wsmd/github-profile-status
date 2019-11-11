@@ -1,17 +1,23 @@
-import { StatusCommand } from './statusCommand';
+import { GraphQLClient } from '../types';
+import { BaseCommand } from './baseCommand';
 
-export class ClearCommand extends StatusCommand<boolean> {
-  protected async perform() {
-    const fields = await this.getStatusFields();
+const clearUserStatusMutation = `
+  mutation {
+    changeUserStatus(input: {}) {
+      status {
+        message
+      }
+    }
+  }
+`;
 
-    await this.page.evaluate(input => (input.value = ''), fields.emoji);
-    await this.page.evaluate(input => (input.value = ''), fields.message);
-    await this.page.evaluate(form => form.submit(), fields.form);
+export class ClearCommand extends BaseCommand<boolean> {
+  constructor(token: string) {
+    super(token);
+  }
 
-    await this.page.waitForResponse(
-      response => response.url().includes('users/status') && response.status() === 200,
-    );
-
+  protected async perform(client: GraphQLClient) {
+    await client.request(clearUserStatusMutation);
     return true;
   }
 }
