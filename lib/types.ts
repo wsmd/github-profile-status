@@ -1,5 +1,3 @@
-export { GraphQLClient } from 'graphql-request';
-
 export interface UserStatus {
   /**
    * An emoji summarizing the user's status.
@@ -38,7 +36,7 @@ export interface ChangeUserStatusInput {
   /**
    * A short description of your current status.
    */
-  message: string | null;
+  message?: string | null;
 }
 
 type Emoji =

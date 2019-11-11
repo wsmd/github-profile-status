@@ -1,16 +1,9 @@
 import * as Commands from './commands';
+import { GraphQLClient } from './graphQLClient';
 import { ChangeUserStatusInput } from './types';
 
-export interface GithubProfileStatusConstructorOptions {
-  token: string;
-}
-
 export class GitHubProfileStatus {
-  private token: string;
-
-  constructor(options: GithubProfileStatusConstructorOptions) {
-    this.token = options.token;
-  }
+  constructor(private client: GraphQLClient) {}
 
   /**
    * Clears the user profile status
@@ -29,7 +22,7 @@ export class GitHubProfileStatus {
   /**
    * Retrieves the status of the provided user
    */
-  public async getForUser(user?: string) {
+  public async getForUser(user: string) {
     return this.execCommand(Commands.GetUserCommand, user);
   }
 
@@ -43,16 +36,16 @@ export class GitHubProfileStatus {
   /**
    * Partially updates the provided status attribues.
    */
-  public async update(changes: Partial<ChangeUserStatusInput>) {
+  public async update(changes: ChangeUserStatusInput) {
     const currentStatus = await this.get();
     const newStatus = Object.assign(currentStatus || {}, changes);
     return this.set(newStatus as ChangeUserStatusInput);
   }
 
-  private async execCommand<C extends Commands.CommandClass, P extends Commands.CommandParams<C>>(
+  private async execCommand<C extends Commands.Command, P extends Commands.CommandParams<C>>(
     command: C,
     ...args: P
-  ) {
-    return new command(this.token, ...args).exec() as Commands.CommandResult<C>;
+  ): Promise<Commands.CommandReturnType<C>> {
+    return new command(this.client).perform(...args);
   }
 }

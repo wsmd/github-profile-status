@@ -1,8 +1,8 @@
-import { GraphQLClient, UserStatus } from '../types';
+import { UserStatus } from '../types';
 import { BaseCommand } from './baseCommand';
 
 const getViewerStatusQuery = `
-  query getViewerStatusQuery {
+  query {
     viewer {
       status {
         emoji
@@ -20,13 +20,9 @@ interface Payload {
   };
 }
 
-export class GetViewerCommand extends BaseCommand<UserStatus | null> {
-  constructor(token: string) {
-    super(token);
-  }
-
-  protected async perform(client: GraphQLClient) {
-    const result = await client.request<Payload>(getViewerStatusQuery);
+export class GetViewerCommand extends BaseCommand<Payload['viewer']['status']> {
+  public async perform() {
+    const result = await this.client.request<Payload>(getViewerStatusQuery);
     return result.viewer.status;
   }
 }

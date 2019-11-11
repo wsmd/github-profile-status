@@ -1,4 +1,3 @@
-import { GraphQLClient } from '../types';
 import { BaseCommand } from './baseCommand';
 
 const clearUserStatusMutation = `
@@ -12,12 +11,8 @@ const clearUserStatusMutation = `
 `;
 
 export class ClearCommand extends BaseCommand<boolean> {
-  constructor(token: string) {
-    super(token);
-  }
-
-  protected async perform(client: GraphQLClient) {
-    await client.request(clearUserStatusMutation);
+  public async perform() {
+    await this.client.request(clearUserStatusMutation);
     return true;
   }
 }

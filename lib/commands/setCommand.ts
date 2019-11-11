@@ -1,4 +1,4 @@
-import { ChangeUserStatusInput, GraphQLClient, UserStatus } from '../types';
+import { ChangeUserStatusInput, UserStatus } from '../types';
 import { BaseCommand } from './baseCommand';
 
 const changeUserStatusMutation = `
@@ -20,14 +20,10 @@ interface Payload {
   };
 }
 
-export class SetCommand extends BaseCommand<UserStatus | null> {
-  constructor(token: string, private status: ChangeUserStatusInput) {
-    super(token);
-  }
-
-  protected async perform(client: GraphQLClient) {
-    const result = await client.request<Payload>(changeUserStatusMutation, {
-      status: this.status,
+export class SetCommand extends BaseCommand<Payload['changeUserStatus']['status']> {
+  public async perform(status: ChangeUserStatusInput) {
+    const result = await this.client.request<Payload>(changeUserStatusMutation, {
+      status,
     });
     return result.changeUserStatus.status;
   }
