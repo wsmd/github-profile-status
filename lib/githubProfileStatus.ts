@@ -1,5 +1,5 @@
 import * as Commands from './commands';
-import { ChangeUserStatusInput, UserStatus } from './types';
+import { ChangeUserStatusInput } from './types';
 
 export interface GithubProfileStatusConstructorOptions {
   token: string;
@@ -22,21 +22,21 @@ export class GitHubProfileStatus {
   /**
    * Retrieves the status of the authenticated user
    */
-  public async get(): Promise<UserStatus> {
+  public async get() {
     return this.execCommand(Commands.GetViewerCommand);
   }
 
   /**
    * Retrieves the status of the provided user
    */
-  public async getForUser(user?: string): Promise<UserStatus> {
+  public async getForUser(user?: string) {
     return this.execCommand(Commands.GetUserCommand, user);
   }
 
   /**
    * Updates the user profile status
    */
-  public async set(status: ChangeUserStatusInput): Promise<UserStatus> {
+  public async set(status: ChangeUserStatusInput) {
     return this.execCommand(Commands.SetCommand, status);
   }
 

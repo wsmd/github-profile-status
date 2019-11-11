@@ -14,23 +14,21 @@ const getUserStatusQuery = `
   }
 `;
 
-interface UserStatusPayload {
+interface Payload {
   user: {
-    status: UserStatus;
+    status: UserStatus | null;
   };
 }
 
-export class GetUserCommand extends BaseCommand<UserStatus> {
+export class GetUserCommand extends BaseCommand<UserStatus | null> {
   constructor(token: string, private user?: string) {
     super(token);
   }
 
   protected async perform(client: GraphQLClient) {
-    const variables = { user: this.user };
-    const userStatusPayload = await client.request<UserStatusPayload>(
-      getUserStatusQuery,
-      variables,
-    );
+    const userStatusPayload = await client.request<Payload>(getUserStatusQuery, {
+      user: this.user,
+    });
     return userStatusPayload.user.status;
   }
 }

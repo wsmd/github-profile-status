@@ -14,19 +14,19 @@ const getViewerStatusQuery = `
   }
 `;
 
-interface ViewerStatusPayload {
+interface Payload {
   viewer: {
-    status: UserStatus;
+    status: UserStatus | null;
   };
 }
 
-export class GetViewerCommand extends BaseCommand<UserStatus> {
+export class GetViewerCommand extends BaseCommand<UserStatus | null> {
   constructor(token: string) {
     super(token);
   }
 
   protected async perform(client: GraphQLClient) {
-    const result = await client.request<ViewerStatusPayload>(getViewerStatusQuery);
+    const result = await client.request<Payload>(getViewerStatusQuery);
     return result.viewer.status;
   }
 }

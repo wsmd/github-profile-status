@@ -1,10 +1,10 @@
 export { GraphQLClient } from 'graphql-request';
 
-export type UserStatus = null | {
+export interface UserStatus {
   /**
    * An emoji summarizing the user's status.
    */
-  emoji: string | null;
+  emoji: Emoji | null;
   /**
    * If set, the status will not be shown after this date.
    */
@@ -17,14 +17,14 @@ export type UserStatus = null | {
    * A brief message describing what the user is doing.
    */
   message: string | null;
-};
+}
 
 export interface ChangeUserStatusInput {
   /**
    * The emoji to represent your status. Can either be a native Unicode emoji or
    * an emoji name with colons, e.g., :wave:
    */
-  emoji?: string | null;
+  emoji?: Emoji | null;
   /**
    * If set, the user status will not be shown after this date. The value can be
    * either a Date object or an ISO-8601 encoded UTC date string.

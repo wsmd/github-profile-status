@@ -16,11 +16,11 @@ const changeUserStatusMutation = `
 
 interface Payload {
   changeUserStatus: {
-    status: UserStatus;
+    status: UserStatus | null;
   };
 }
 
-export class SetCommand extends BaseCommand<UserStatus> {
+export class SetCommand extends BaseCommand<UserStatus | null> {
   constructor(token: string, private status: ChangeUserStatusInput) {
     super(token);
   }
