@@ -23,6 +23,7 @@
     - [`get(): Promise<UserStatus | null>`](#get-promiseuserstatus--null)
     - [`getForUser(username?: string): Promise<UserStatus | null>`](#getforuserusername-string-promiseuserstatus--null)
     - [`set(status: ChangeUserStatusInput): Promise<UserStatus | null>`](#setstatus-changeuserstatusinput-promiseuserstatus--null)
+    - [`update(status: ChangeUserStatusInput): Promise<UserStatus | null>`](#updatestatus-changeuserstatusinput-promiseuserstatus--null)
     - [`clear(): Promise<boolean>`](#clear-promiseboolean)
   - [The `ChangeUserStatusInput` Object](#the-changeuserstatusinput-object)
   - [The `UserStatus` Object](#the-userstatus-object)
@@ -73,6 +74,12 @@ async function main() {
     limitedAvailability: true,
   });
 
+    
+  // update your the github profile status
+  await profileStatus.update({
+    message: 'Howdy!',
+  });
+
   // get your github profile status
   const status = await profileStatus.get();
 
@@ -115,9 +122,18 @@ Returns a Promise that resolves with the [user status](#status-object) object, o
 
 Sets the user status using the provided [`status`](#the-changeuserstatusinput-object).
 
-All attribues of `status` are optional except for `message`.
+All attribues of `status` are optional except for `message`. 
+
+Note that attributes omitted from `status` will be cleared. If you only want to update the specified attributes without affecting any exisitng ones, consider using the [`update()`](#updatechanges-changeuserstatusinput-promiseuserstatus--null) method instead.
 
 Returns a Promise that resolves with the [user status](#status-object) object, or `null` if the status was cleared (e.g. providing an empty message).
+
+
+#### `update(status: ChangeUserStatusInput): Promise<UserStatus | null>`
+
+Partially updates the provided status attribues. All attributes of [`status`](##the-changeuserstatusinput-object), including `message`, are optional. Attributes ommited from the `status` object will remain as they are.
+
+Returns a Promise that resolves with the [user status](#status-object) object, or `null` if the status was cleared (e.g. providing empty attributes).
 
 #### `clear(): Promise<boolean>`
 

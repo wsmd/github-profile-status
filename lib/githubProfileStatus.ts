@@ -40,6 +40,15 @@ export class GitHubProfileStatus {
     return this.execCommand(Commands.SetCommand, status);
   }
 
+  /**
+   * Partially updates the provided status attribues.
+   */
+  public async update(changes: Partial<ChangeUserStatusInput>) {
+    const currentStatus = await this.get();
+    const newStatus = Object.assign(currentStatus || {}, changes);
+    return this.set(newStatus as ChangeUserStatusInput);
+  }
+
   private async execCommand<C extends Commands.CommandClass, P extends Commands.CommandParams<C>>(
     command: C,
     ...args: P
