@@ -17,25 +17,32 @@
     "profile",
     "profile-status",
     "automation",
-    "puppeteer"
+    "github-api",
+    "api",
+    "graphql"
   ],
   "scripts": {
     "typecheck": "tsc --noEmit",
     "build": "tsc",
     "prepack": "rm -rf dist && yarn build",
     "lint": "tslint --project .",
-    "test": "yarn typecheck && yarn lint && yarn test:headless",
-    "test:build": "yarn test:cleanup && tsc --build test/tsconfig.json",
-    "test:cleanup": "rm -rf test/tmp",
-    "test:headless": "yarn test:build && node -r dotenv/config test/tmp/test"
+    "test": "jest",
+    "test:all": "yarn typecheck && yarn lint && yarn test:coverage",
+    "test:coverage": "jest --coverage --verbose",
+    "report-coverage": "cat ./coverage/lcov.info | coveralls"
   },
   "dependencies": {
-    "puppeteer": "^1.13.0"
+    "graphql-request": "^1.8.2"
   },
   "devDependencies": {
-    "@types/dotenv": "^6.1.1",
-    "@types/puppeteer": "^1.12.3",
-    "dotenv": "^7.0.0",
+    "@types/fetch-mock": "^7.3.1",
+    "@types/jest": "^24.0.22",
+    "@types/node": "^12.12.7",
+    "coveralls": "^3.0.7",
+    "fetch-mock": "^7.7.3",
+    "jest": "^24.9.0",
+    "prettier": "^1.19.1",
+    "ts-jest": "^24.1.0",
     "tslint": "^5.14.0",
     "typescript": "^3.3.4000"
   },

@@ -1,17 +1,24 @@
-import { StatusCommand } from './statusCommand';
+import { BaseCommand } from './baseCommand';
 
-export class ClearCommand extends StatusCommand<boolean> {
-  protected async perform() {
-    const fields = await this.getStatusFields();
+const clearUserStatusMutation = `
+  mutation {
+    changeUserStatus(input: {}) {
+      status {
+        message
+      }
+    }
+  }
+`;
 
-    await this.page.evaluate(input => (input.value = ''), fields.emoji);
-    await this.page.evaluate(input => (input.value = ''), fields.message);
-    await this.page.evaluate(form => form.submit(), fields.form);
+interface Payload {
+  changeUserStatus: {
+    status: null;
+  };
+}
 
-    await this.page.waitForResponse(
-      response => response.url().includes('users/status') && response.status() === 200,
-    );
-
-    return true;
+export class ClearCommand extends BaseCommand<boolean> {
+  public async perform() {
+    const result = await this.client.request<Payload>(clearUserStatusMutation);
+    return result.changeUserStatus.status === null;
   }
 }
