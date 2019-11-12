@@ -4,6 +4,7 @@
 
 [![Current Release](https://img.shields.io/npm/v/github-profile-status.svg)](https://www.npmjs.com/package/github-profile-status)
 [![CI Build](https://travis-ci.org/wsmd/github-profile-status.svg?branch=master)](https://travis-ci.org/wsmd/github-profile-status)
+[![Coverage Status](https://coveralls.io/repos/github/wsmd/github-profile-status/badge.svg?branch=master)](https://coveralls.io/github/wsmd/github-profile-status?branch=master)
 [![Licence](https://img.shields.io/github/license/wsmd/github-profile-status.svg)](https://github.com/wsmd/github-profile-status/blob/master/LICENSE)
 
 </div>
@@ -45,11 +46,11 @@ GitHub introduced a [new feature](https://github.blog/changelog/2019-01-09-set-y
 <br />
 </div>
 
-This library makes it possible to update your profile status programmatically to do really interseting stuff like displaying [what you're listening to](https://github.com/wsmd/github-now-playing) right on GitHub! The possiblities are endless!
+This library allows you to programmatically update your GitHub profile status. With this, you can do really interesting stuff, like displaying what you're listening to right on GitHub! The possibilities are endless!
 
 ## Installation
 
-```
+```sh
 # via npm
 npm install --save github-profile-status
 
@@ -74,7 +75,6 @@ async function main() {
     limitedAvailability: true,
   });
 
-    
   // update your the github profile status
   await profileStatus.update({
     message: 'Howdy!',
@@ -84,7 +84,7 @@ async function main() {
   const status = await profileStatus.get();
 
   // clears your github profile status
-  const cleared = await profileStatus.clear();
+  const success = await profileStatus.clear();
 }
 ```
 
@@ -122,16 +122,13 @@ Returns a Promise that resolves with the [user status](#status-object) object, o
 
 Sets the user status using the provided [`status`](#the-changeuserstatusinput-object).
 
-All attribues of `status` are optional except for `message`. 
-
-Note that attributes omitted from `status` will be cleared. If you only want to update the specified attributes without affecting any exisitng ones, consider using the [`update()`](#updatechanges-changeuserstatusinput-promiseuserstatus--null) method instead.
+Note that attributes omitted from `status` will be cleared. If you only want to update the specified attributes without affecting any existing ones, consider using the [`update()`](#updatechanges-changeuserstatusinput-promiseuserstatus--null) method instead.
 
 Returns a Promise that resolves with the [user status](#status-object) object, or `null` if the status was cleared (e.g. providing an empty message).
 
-
 #### `update(status: ChangeUserStatusInput): Promise<UserStatus | null>`
 
-Partially updates the provided status attribues. All attributes of [`status`](##the-changeuserstatusinput-object), including `message`, are optional. Attributes ommited from the `status` object will remain as they are.
+Partially updates the provided status attributes. All attributes of [`status`](##the-changeuserstatusinput-object) are optional. Attributes omitted from the `status` object will remain as they are.
 
 Returns a Promise that resolves with the [user status](#status-object) object, or `null` if the status was cleared (e.g. providing empty attributes).
 
@@ -163,7 +160,7 @@ interface ChangeUserStatusInput {
   /**
    * A short description of your current status.
    */
-  message: string | null;
+  message?: string | null;
 }
 ```
 
@@ -189,7 +186,7 @@ interface UserStatus {
    * A brief message describing what the user is doing.
    */
   message: string | null;
-};
+}
 ```
 
 ## Licence

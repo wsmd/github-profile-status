@@ -8,7 +8,7 @@ export class GitHubProfileStatus {
   /**
    * Clears the user profile status
    */
-  public async clear(): Promise<boolean> {
+  public async clear() {
     return this.execCommand(Commands.ClearCommand);
   }
 
@@ -38,7 +38,7 @@ export class GitHubProfileStatus {
    */
   public async update(changes: ChangeUserStatusInput) {
     const currentStatus = await this.get();
-    const newStatus = Object.assign(currentStatus || {}, changes);
+    const newStatus = Object.assign(currentStatus || /* istanbul ignore next */ {}, changes);
     return this.set(newStatus as ChangeUserStatusInput);
   }
 

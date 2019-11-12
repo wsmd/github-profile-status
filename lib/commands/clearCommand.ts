@@ -10,9 +10,15 @@ const clearUserStatusMutation = `
   }
 `;
 
+interface Payload {
+  changeUserStatus: {
+    status: null;
+  };
+}
+
 export class ClearCommand extends BaseCommand<boolean> {
   public async perform() {
-    await this.client.request(clearUserStatusMutation);
-    return true;
+    const result = await this.client.request<Payload>(clearUserStatusMutation);
+    return result.changeUserStatus.status === null;
   }
 }
