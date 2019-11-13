@@ -15,7 +15,7 @@
 
 - [Motivation](#motivation)
 - [Installation](#installation)
-- [Usage](#usage)
+- [Example](#example)
 - [API](#api)
   - [Constructor](#constructor)
     - [`new GitHubProfileStatus(options: ConstructorOptions)`](#new-githubprofilestatusoptions-constructoroptions)
@@ -26,8 +26,8 @@
     - [`set(status: ChangeUserStatusInput): Promise<UserStatus | null>`](#setstatus-changeuserstatusinput-promiseuserstatus--null)
     - [`update(status: ChangeUserStatusInput): Promise<UserStatus | null>`](#updatestatus-changeuserstatusinput-promiseuserstatus--null)
     - [`clear(): Promise<boolean>`](#clear-promiseboolean)
-  - [The `ChangeUserStatusInput` Object](#the-changeuserstatusinput-object)
-  - [The `UserStatus` Object](#the-userstatus-object)
+  - [`ChangeUserStatusInput`](#changeuserstatusinput)
+  - [`UserStatus`](#userstatus)
 - [Licence](#licence)
 
 </p>
@@ -35,20 +35,19 @@
 
 ## Motivation
 
-GitHub introduced a [new feature](https://github.blog/changelog/2019-01-09-set-your-status/) that allows users to set a status on their GitHub profile!
-
-> You can now set your status on GitHub! Use your status to share specific information with only your organization, or share a status with all of GitHub! Optionally, you can indicate that you’re busy so your collaborators can determine whether to mention someone else for a quicker response.
+GitHub introduced a [new feature](https://github.blog/changelog/2019-01-09-set-your-status/) that allows you to set your status on your profile!
 
 <div align="center">
-
 <img src="https://user-images.githubusercontent.com/2100222/55207714-ba68c380-51b1-11e9-9283-d11e4265a827.png" width="482" />
 <br />
 <br />
 </div>
 
-This library allows you to programmatically update your GitHub profile status. With this, you can do really interesting stuff, like displaying what you're listening to right on GitHub! The possibilities are endless!
+This library gives you the ability to programmatically update your GitHub profile status. With this, you can do really interesting stuff, like [displaying what you're listening to](https://github.com/wsmd/github-now-playing) right on GitHub! The possibilities are endless!
 
 ## Installation
+
+This library is available on the [npm](https://www.npmjs.com/package/github-profile-status) registry as a [node](https://nodejs.org/en/) module and can be installed by running:
 
 ```sh
 # via npm
@@ -58,7 +57,7 @@ npm install --save github-profile-status
 yarn add github-profile-status
 ```
 
-## Usage
+## Example
 
 ```js
 import { GitHubProfileStatus } from 'github-profile-status';
@@ -110,27 +109,27 @@ Instances have the following methods:
 
 Retrieves the status of the authenticated user.
 
-Returns a Promise that resolves with the [user status](#status-object) object, or `null` if the user does not have a status set.
+Returns a Promise that resolves with the [user status](#userstatus) object, or `null` if the user does not have a status set.
 
 #### `getForUser(username?: string): Promise<UserStatus | null>`
 
 Retrieves the status of the provided user.
 
-Returns a Promise that resolves with the [user status](#status-object) object, or `null` if the user does not have a status set.
+Returns a Promise that resolves with the [user status](#userstatus) object, or `null` if the user does not have a status set.
 
 #### `set(status: ChangeUserStatusInput): Promise<UserStatus | null>`
 
-Sets the user status using the provided [`status`](#the-changeuserstatusinput-object).
+Sets the user status using the provided [`status`](#changeuserstatusinput).
 
-Note that attributes omitted from `status` will be cleared. If you only want to update the specified attributes without affecting any existing ones, consider using the [`update()`](#updatechanges-changeuserstatusinput-promiseuserstatus--null) method instead.
+Note that attributes omitted from `status` will be cleared. If you only want to update the specified attributes without affecting any existing ones, consider using the [`update()`](#updatestatus-changeuserstatusinput-promiseuserstatus--null) method instead.
 
-Returns a Promise that resolves with the [user status](#status-object) object, or `null` if the status was cleared (e.g. providing an empty message).
+Returns a Promise that resolves with the [user status](#userstatus) object, or `null` if the status was cleared (e.g. providing an empty message).
 
 #### `update(status: ChangeUserStatusInput): Promise<UserStatus | null>`
 
-Partially updates the provided status attributes. All attributes of [`status`](##the-changeuserstatusinput-object) are optional. Attributes omitted from the `status` object will remain as they are.
+Partially updates the status with the provided attributes. All attributes of [`status`](#changeuserstatusinput) are optional. Attributes omitted from the `status` object will remain as they are.
 
-Returns a Promise that resolves with the [user status](#status-object) object, or `null` if the status was cleared (e.g. providing empty attributes).
+Returns a Promise that resolves with the [user status](#userstatus) object, or `null` if the status was cleared (e.g. providing empty attributes).
 
 #### `clear(): Promise<boolean>`
 
@@ -138,7 +137,7 @@ Clears the user profile status.
 
 Returns a Promise that resolves to a boolean indicating a successful operation.
 
-### The `ChangeUserStatusInput` Object
+### `ChangeUserStatusInput`
 
 ```ts
 interface ChangeUserStatusInput {
@@ -164,7 +163,7 @@ interface ChangeUserStatusInput {
 }
 ```
 
-### The `UserStatus` Object
+### `UserStatus`
 
 The status object has the following keys:
 
