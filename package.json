@@ -1,6 +1,6 @@
 {
   "name": "github-profile-status",
-  "version": "0.3.0",
+  "version": "1.0.0",
   "description": "Update the status of your GitHub profile programmatically",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
